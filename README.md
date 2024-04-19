@@ -1,1 +1,0 @@
-# Codificador-Decodificador-de-codigo-de-barras-para-boletos-bancarios
