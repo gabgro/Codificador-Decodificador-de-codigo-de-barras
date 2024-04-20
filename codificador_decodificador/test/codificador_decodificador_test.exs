@@ -17,4 +17,41 @@ defmodule CodificadorTest do
   test "Fator de Vencimento 5" do
   assert Codificador.codificar_data_vencimento("23/02/2025") == 1001
   end
+
+  test "Valor 1 (string)" do
+    assert Codificador.codificar_valor("R$ 200.00") == "0000020000"
+  end
+  test "Valor 2 (string)" do
+    assert Codificador.codificar_valor("R$200.00") == "0000020000"
+  end
+  test "Valor 3 (string)" do
+    assert Codificador.codificar_valor("200.00") == "0000020000"
+  end
+  test "Valor 4 (string)" do
+    assert Codificador.codificar_valor("R$ 200.12") == "0000020012"
+  end
+  test "Valor 5 (string)" do
+    assert Codificador.codificar_valor("R$ 20012") == "0000020012"
+  end
+  test "Valor 6 (string)" do
+    assert Codificador.codificar_valor("R$ 2000.12") == "0000200012"
+  end
+  test "Valor 7 (string)" do
+    assert Codificador.codificar_valor("R$ 20000.12") == "0002000012"
+  end
+  # test "Valor 1 (float)" do
+  #   assert Codificador.codificar_valor(200.00) == "0000020000"
+  # end
+  # test "Valor 2 (float)" do
+  #   assert Codificador.codificar_valor(200.21) == "0000020021"
+  # end
+  # test "Valor 3 (float)" do
+  #   assert Codificador.codificar_valor(1234.12) == "0000123412"
+  # end
+  # # test "Valor 4 (float)" do
+  # #   assert Codificador.codificar_valor("R$ 200.123")
+  # # end
+  # # test "Valor 5 (float)" do
+  # #   assert Codificador.codificar_valor("R$ 200123")
+  # # end
 end
