@@ -28,12 +28,6 @@ defmodule Codificador do
     String.pad_leading(valor, 10,"0")
   end
 
-  # def codificar_valor(valor_float) when is_float(valor_float) do
-  #   # Converte valor em string e remove o "."
-  #   valor = valor_float |> Float.round(2) |> Float.to_string() |> String.replace([".",","], "")
-  #   # numero_de_zeros = 10 - String.length(valor)
-  #   String.pad_leading(valor, 10,"0")
-  # end
   @moduledoc """
   Documentation for `CodificadorDecodificador`.
   """
