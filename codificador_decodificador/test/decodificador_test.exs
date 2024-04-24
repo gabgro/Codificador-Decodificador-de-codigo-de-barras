@@ -2,6 +2,14 @@ defmodule DecodificadorTest do
   use ExUnit.Case
   doctest Decodificador
 
+  test "Banco 1" do
+    assert Decodificador.decodificar_banco("00193373700000001000500940144816060680935031") == "001"
+  end
+
+  test "Moeda 1" do
+    assert Decodificador.decodificar_moeda("00193373700000001000500940144816060680935031") == "9"
+  end
+
   test "Data de Vencimento 1" do
     assert Decodificador.decodificar_data_vencimento("00193373700000001000500940144816060680935031") == ~D[2007-12-31]
   end

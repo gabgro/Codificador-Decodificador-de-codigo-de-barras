@@ -1,7 +1,11 @@
 defmodule Decodificador do
 
-  def decodificar_banco_e_moeda_(codigo_de_barras) do
-    String.slice(codigo_de_barras,0,4)
+  def decodificar_banco(codigo_de_barras) do
+    String.slice(codigo_de_barras,0,3)
+  end
+
+  def decodificar_moeda(codigo_de_barras) do
+    String.at(codigo_de_barras,3)
   end
 
   def decodificar_data_vencimento(codigo_de_barras) do
