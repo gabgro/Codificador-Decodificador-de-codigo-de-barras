@@ -28,6 +28,22 @@ defmodule Codificador do
     String.pad_leading(valor, 10,"0")
   end
 
+
+  # def soma_dv(codigo, peso_atual \\ 9) do
+  #   digito_atual = codigo |> String.last() |> String.to_integer()
+  #   (digito_atual * peso_atual) + soma_dv(String.slice(codigo, 0, String.length(codigo) - 1), peso_atual)
+  # end
+  # def soma_dv(codigo, peso_atual) when peso_atual == 2 do
+  #   digito_atual = codigo |> String.last() |> String.to_integer()
+  #   (digito_atual * peso_atual) + soma_dv(String.slice(codigo, 0, String.length(codigo) - 1), 2)
+  # end
+
+  # def calcular_dv_codigo_de_barras(codigo_sem_dv, peso_atual \\ 2) do
+
+  # end
+
+
+
   @moduledoc """
   Documentation for `CodificadorDecodificador`.
   """
