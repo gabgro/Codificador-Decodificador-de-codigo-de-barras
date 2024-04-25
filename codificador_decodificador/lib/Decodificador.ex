@@ -4,9 +4,13 @@ defmodule Decodificador do
     String.slice(codigo_de_barras,0,4)
   end
 
+  defp converter_data_string(data) do
+    data |> Date.to_string() |> String.split("-") |>  Enum.reverse() |>
+    List.insert_at(1, "/") |> List.insert_at(3, "/") |> List.to_string
+  end
   def decodificar_data_vencimento(codigo_de_barras) do
     fator_de_validade = String.slice(codigo_de_barras, 5, 4) |> String.to_integer()
-    Date.add(~D[1997-10-07], fator_de_validade)
+    Date.add(~D[1997-10-07], fator_de_validade) |> converter_data_string
   end
 
   def decodificar_valor(codigo_de_barras) do
@@ -17,7 +21,7 @@ defmodule Decodificador do
     str1 <> "." <> str2
   end
 
-  
+
   @moduledoc """
   Documentation for `CodificadorDecodificador`.
   """
