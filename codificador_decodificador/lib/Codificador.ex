@@ -1,5 +1,6 @@
 defmodule Codificador do
 
+
   def codificar_data_vencimento(data_str) do
     # Converte em um objeto do tipo Date
     data_lista = data_str |> String.split("/") |> Enum.map(&String.to_integer/1)
