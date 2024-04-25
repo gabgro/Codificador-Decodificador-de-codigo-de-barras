@@ -29,15 +29,20 @@ defmodule Codificador do
     String.pad_leading(valor, 10,"0")
   end
 
-  # Calcula o somatorio dos dígitos do codigo com seus devidos multiplicadores
-    def soma_dv(codigo, _) when byte_size(codigo) == 1 do
-    0
+  # == Calcula o somatorio dos dígitos do codigo com seus devidos multiplicadores
+  # Condição de parada: quando há apenas um digito restante do codigo
+  def soma_dv(codigo, peso_atual) when byte_size(codigo) == 1 do
+    String.to_integer(codigo) * peso_atual
   end
+  # Quando o peso está entre 2 e 8
   def soma_dv(codigo, peso_atual) when peso_atual < 9 do
+    # Extrai último termo da string do codigo e converte para inteiro
     digito_atual = codigo |> String.last() |> String.to_integer()
+    # Retira ultima letra
     codigo_sem_ultimo = String.slice(codigo, 0, String.length(codigo) - 1)
     (digito_atual * peso_atual) + soma_dv(codigo_sem_ultimo,peso_atual + 1)
   end
+  # Quando o peso está em 9 ,resetamos o valor para 2
   def soma_dv(codigo, peso_atual) do
     digito_atual = codigo |> String.last() |> String.to_integer()
     codigo_sem_ultimo = String.slice(codigo, 0, String.length(codigo) - 1)
@@ -49,7 +54,7 @@ defmodule Codificador do
     somatorio_dos_termos = soma_dv(codigo_sem_dv, 2)
     fator = 11 - rem(somatorio_dos_termos, 11)
     if fator in [0, 10, 11] do
-      "asdsad"
+      "1"
     end
     Integer.to_string(fator)
   end
