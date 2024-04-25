@@ -28,6 +28,32 @@ defmodule Codificador do
     String.pad_leading(valor, 10,"0")
   end
 
+  # Calcula o somatorio dos dígitos do codigo com seus devidos multiplicadores
+    def soma_dv(codigo, _) when byte_size(codigo) == 1 do
+    0
+  end
+  def soma_dv(codigo, peso_atual) when peso_atual < 9 do
+    digito_atual = codigo |> String.last() |> String.to_integer()
+    codigo_sem_ultimo = String.slice(codigo, 0, String.length(codigo) - 1)
+    (digito_atual * peso_atual) + soma_dv(codigo_sem_ultimo,peso_atual + 1)
+  end
+  def soma_dv(codigo, peso_atual) do
+    digito_atual = codigo |> String.last() |> String.to_integer()
+    codigo_sem_ultimo = String.slice(codigo, 0, String.length(codigo) - 1)
+    (digito_atual * peso_atual) + soma_dv(codigo_sem_ultimo, 2)
+  end
+
+
+  def calcular_dv_codigo_de_barras(codigo_sem_dv) do
+    somatorio_dos_termos = soma_dv(codigo_sem_dv, 2)
+    fator = 11 - rem(somatorio_dos_termos, 11)
+    if fator in [0, 10, 11] do
+      "asdsad"
+    end
+    Integer.to_string(fator)
+  end
+
+    # === Linha Digitável === #
   # Transdorma uma String em uma lista
   def stringToList(string) do
     for<<x::binary-1 <- string>>, do: x
@@ -79,21 +105,6 @@ defmodule Codificador do
     |>rem(10)
     10-resultado
   end
-
-  # def soma_dv(codigo, peso_atual \\ 9) do
-  #   digito_atual = codigo |> String.last() |> String.to_integer()
-  #   (digito_atual * peso_atual) + soma_dv(String.slice(codigo, 0, String.length(codigo) - 1), peso_atual)
-  # end
-  # def soma_dv(codigo, peso_atual) when peso_atual == 2 do
-  #   digito_atual = codigo |> String.last() |> String.to_integer()
-  #   (digito_atual * peso_atual) + soma_dv(String.slice(codigo, 0, String.length(codigo) - 1), 2)
-  # end
-
-  # def calcular_dv_codigo_de_barras(codigo_sem_dv, peso_atual \\ 2) do
-
-  # end
-
-
 
   @moduledoc """
   Documentation for `CodificadorDecodificador`.

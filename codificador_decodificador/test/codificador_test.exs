@@ -39,4 +39,8 @@ defmodule CodificadorTest do
   test "Valor 7 (string)" do
     assert Codificador.codificar_valor("R$ 20000.12") == "0002000012"
   end
+
+  test "DV" do
+    assert Codificador.calcular_dv_codigo_de_barras("0019373700000001000500940144816060680935031") == "3"
+  end
 end

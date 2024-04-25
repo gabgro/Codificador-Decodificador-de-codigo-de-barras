@@ -16,6 +16,8 @@ defmodule Decodificador do
     str2 = elem(strs,1)
     str1 <> "." <> str2
   end
+
+  
   @moduledoc """
   Documentation for `CodificadorDecodificador`.
   """
