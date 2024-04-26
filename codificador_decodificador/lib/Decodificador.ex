@@ -1,16 +1,20 @@
 defmodule Decodificador do
+  import Codificador
+  def decodificar_banco(codigo_de_barras) do
+    codigo_de_barras |> String.slice(0,3)
+  end
 
-  def decodificar_banco_e_moeda_(codigo_de_barras) do
-    String.slice(codigo_de_barras,0,4)
+  def decodificar_moeda(codigo_de_barras) do
+    codigo_de_barras |> String.at(3)
   end
 
   defp converter_data_string(data) do
-    data |> Date.to_string() |> String.split("-") |>  Enum.reverse() |>
+    data |> Date.to_string |> String.split("-") |>  Enum.reverse |>
     List.insert_at(1, "/") |> List.insert_at(3, "/") |> List.to_string
   end
   def decodificar_data_vencimento(codigo_de_barras) do
     fator_de_validade = String.slice(codigo_de_barras, 5, 4) |> String.to_integer()
-    Date.add(~D[1997-10-07], fator_de_validade) |> converter_data_string
+    Date.add(~D[1997-10-07], fator_de_validade) |> converter_data_string()
   end
 
   def decodificar_valor(codigo_de_barras) do
@@ -19,6 +23,16 @@ defmodule Decodificador do
     str1 = elem(strs,0)
     str2 = elem(strs,1)
     str1 <> "." <> str2
+  end
+
+  # Não parece ser possivel decodificar as informacoes separadamente (conta corrente etc)
+  # pois não há como saber o tipo de convenio
+  def decodificar_nosso_numero_etc(codigo_de_barras) do
+    codigo_de_barras |> String.slice(19, 25)
+  end
+
+  def decodificar_linha_digitavel(codigo_de_barras) do
+    Codificador.codificar_linha_digitavel(codigo_de_barras)
   end
 
 

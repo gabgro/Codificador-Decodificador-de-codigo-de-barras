@@ -7,7 +7,7 @@ defmodule Codificador do
     data_entrada = Date.new(Enum.at(data_lista,2), Enum.at(data_lista,1), Enum.at(data_lista,0)) |>
     elem(1)
     # Data base
-    data_base = Date.new(1997,10,7) |> elem(1)
+    data_base = ~D[1997-10-07]
     # Calcula o fator de vencimento
     fator_de_validade = Date.diff(data_entrada, data_base)
     if (fator_de_validade > 9999) do
@@ -30,15 +30,16 @@ defmodule Codificador do
   end
 
   # == Calcula o somatorio dos dígitos do codigo com seus devidos multiplicadores
+
   # Condição de parada: quando há apenas um digito restante do codigo
   def soma_dv(codigo, peso_atual) when byte_size(codigo) == 1 do
     String.to_integer(codigo) * peso_atual
   end
-  # Quando o peso está entre 2 e 8
+  # Quando o peso está em [2, 8]
   def soma_dv(codigo, peso_atual) when peso_atual < 9 do
     # Extrai último termo da string do codigo e converte para inteiro
     digito_atual = codigo |> String.last() |> String.to_integer()
-    # Retira ultima letra
+    # Retira ultima letra da string "codigo"
     codigo_sem_ultimo = String.slice(codigo, 0, String.length(codigo) - 1)
     (digito_atual * peso_atual) + soma_dv(codigo_sem_ultimo,peso_atual + 1)
   end
@@ -49,7 +50,6 @@ defmodule Codificador do
     (digito_atual * peso_atual) + soma_dv(codigo_sem_ultimo, 2)
   end
 
-
   def calcular_dv_codigo_de_barras(codigo_sem_dv) do
     somatorio_dos_termos = soma_dv(codigo_sem_dv, 2)
     fator = 11 - rem(somatorio_dos_termos, 11)
@@ -57,6 +57,13 @@ defmodule Codificador do
       "1"
     end
     Integer.to_string(fator)
+  end
+
+  # === Convênio
+  def codificar_nosso_numero(tipo_de_covenio, num_do_convenio, sequencial_do_cliente,
+  numero_de_relacionamento, modalidade_cobranca) do
+    tipo_de_covenio <> num_do_convenio <> sequencial_do_cliente <>
+    numero_de_relacionamento <> modalidade_cobranca
   end
 
     # === Linha Digitável === #
@@ -85,7 +92,7 @@ defmodule Codificador do
   end
 
   # Critério de parada da função alternar
-  def alternar([], _) do
+  def alternar([], _) do  # devia ser declarado antes das outras eu acho
     []
   end
 
@@ -110,6 +117,24 @@ defmodule Codificador do
     |>Enum.reduce(0,fn x,y -> x+y end)
     |>rem(10)
     10-resultado
+  end
+
+  def codificar_linha_digitavel(codigo_de_barras) do  # será a ultima funcao chamada, pois precisa do codigo inteiro
+  # Campo 1
+  str1 = (codigo_de_barras |> String.slice(0, 4)) <> (codigo_de_barras |> String.slice(19,5))
+  campo1 = str1 <> (str1 |> digitoVerificadorLinha(1) |> Integer.to_string)
+  # Campo 2
+  str2 = (codigo_de_barras |> String.slice(24, 10))
+  campo2 = str2 <> (str2 |> digitoVerificadorLinha(2) |> Integer.to_string)
+  # Campo 3
+  str3 = codigo_de_barras |> String.slice(34, 10)
+  campo3 = str3  <> (str3 |> digitoVerificadorLinha(3) |> Integer.to_string)
+  # Campo 4
+  campo4 = codigo_de_barras |> String.at(4)
+  # Campo 5
+  campo5 = (codigo_de_barras |> String.slice(5, 4)) <> (codigo_de_barras |> String.slice(9, 10))
+  # Montagem da linha
+  campo1 <> campo2 <> campo3 <> campo4 <> campo5
   end
 
   @moduledoc """
