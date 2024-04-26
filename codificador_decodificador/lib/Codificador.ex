@@ -1,6 +1,5 @@
 defmodule Codificador do
 
-
   def codificar_data_vencimento(data_str) do
     # Converte em um objeto do tipo Date
     data_lista = data_str |> String.split("/") |> Enum.map(&String.to_integer/1)
@@ -54,16 +53,15 @@ defmodule Codificador do
     somatorio_dos_termos = soma_dv(codigo_sem_dv, 2)
     fator = 11 - rem(somatorio_dos_termos, 11)
     if fator in [0, 10, 11] do
-      "1"
+      (codigo_sem_dv |> String.slice(0, 3)) <> "1" <> (codigo_sem_dv |> String.slice(4, 39))
     end
-    Integer.to_string(fator)
+    (codigo_sem_dv |> String.slice(0, 4)) <> Integer.to_string(fator) <> (codigo_sem_dv |> String.slice(4, 39))
   end
 
   # === Convênio
-  def codificar_nosso_numero(tipo_de_covenio, num_do_convenio, sequencial_do_cliente,
-  numero_de_relacionamento, modalidade_cobranca) do
-    tipo_de_covenio <> num_do_convenio <> sequencial_do_cliente <>
-    numero_de_relacionamento <> modalidade_cobranca
+  def codificar_nosso_numero(lista) do
+    (lista |> List.pop_at(0) |> elem(1)) <> (lista |> List.pop_at(1) |> elem(1)) <>
+    (lista |> List.pop_at(2) |> elem(1)) <> (lista |> List.pop_at(3) |> elem(1))
   end
 
     # === Linha Digitável === #
@@ -150,9 +148,17 @@ defmodule Codificador do
       :world
 
   """
+  def codificar(dados) do
+    # codigo_do_banco = dados |> Enum.at(0)
+    # moeda = dados |> Enum.at(1)
+    # fator_de_validade = dados |> Enum.at(2) |> codificar_data_vencimento
+    # valor = dados |> Enum.at(3) |> codificar_valor
+    # nosso_numero = dados |> Enum.slice(4, 5) |> codificar_nosso_numero
 
+    # codigo_de_barras = StringIO.open("w")
+    # IO.write(codigo_de_barras, Enum.at(dados,0) <> Enum.at(dados,1))
+    # IO.write(codigo_de_barras, codificar_data_vencimento)
+    # IO.write()
 
-
-
-  # def assembler(, dv)
+  end
 end

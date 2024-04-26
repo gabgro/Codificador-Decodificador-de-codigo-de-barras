@@ -41,7 +41,7 @@ defmodule CodificadorTest do
   end
 
   test "DV do código de barras" do
-    assert Codificador.calcular_dv_codigo_de_barras("0019373700000001000500940144816060680935031") == "3"
+    assert Codificador.calcular_dv_codigo_de_barras("0019373700000001000500940144816060680935031") == "00193373700000001000500940144816060680935031"
   end
 
   test "Linha Digitável" do
