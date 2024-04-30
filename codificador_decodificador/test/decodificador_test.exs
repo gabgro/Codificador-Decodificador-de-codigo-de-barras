@@ -2,7 +2,7 @@ defmodule DecodificadorTest do
   use ExUnit.Case
   doctest Decodificador
 
-  test "Data de Vencimento 1" do
+  test "Data de Vencimento" do
     assert Decodificador.decodificar_data_vencimento("00193373700000001000500940144816060680935031") == "31/12/2007"
   end
   test "Valor" do
