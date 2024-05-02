@@ -55,8 +55,7 @@ defmodule CodificadorTest do
   end
 
   test "Codificador Completo (Arquivo)" do
-    assert Codificador.codificar("codificador_test_file.txt") ==
-    "Código de Barras: 00193373700000001000500940144816060680935031
-    Linha Digitável: 00190500954014481606906809350314337370000000100"
+    assert Codificador.codificar("../codificador_decodificador/test/codificador_test_file.txt") ==
+    "Código de Barras: 00193373700000001000500940144816060680935031 e Linha Digitável: 00190500954014481606906809350314337370000000100"
   end
 end

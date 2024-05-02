@@ -155,6 +155,7 @@ defmodule Codificador do
     [codigo_de_barras, linha_digitavel] |> saida_codificador()
   end
   def codificar(arquivo) do
-    arquivo |> File.read |> elem(1) |> String.split(["\n"]) |> codificar
+    IO.puts(arquivo |> File.read |> elem(1))
+    arquivo |> File.read |> elem(1) |> String.split("\n") |> codificar
   end
 end
