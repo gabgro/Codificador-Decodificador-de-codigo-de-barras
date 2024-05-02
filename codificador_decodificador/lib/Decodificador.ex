@@ -27,12 +27,39 @@ defmodule Decodificador do
 
   # Não parece ser possivel decodificar as informacoes separadamente (conta corrente etc)
   # pois não há como saber o tipo de convenio
-  def decodificar_nosso_numero_etc(codigo_de_barras) do
+  def decodificar_campo_livre(codigo_de_barras) do
     codigo_de_barras |> String.slice(19, 25)
   end
 
   def decodificar_linha_digitavel(codigo_de_barras) do
     Codificador.codificar_linha_digitavel(codigo_de_barras)
+  end
+
+
+  # A lista de saida vai estar organizado de acordo com o enunciado da tarefa 2
+  def saida_decodificador(lista) do
+    # Abre uma stream que recebera as strings
+  "Linha Digitável: " <> Enum.at(lista, 5) <> "\n" <>
+  "Código do Banco: " <> Enum.at(lista, 0) <> "\n" <>
+  "Código da Moeda: " <> Enum.at(lista, 1) <> "\n" <>
+  "Data de Vencimento: " <> Enum.at(lista, 2) <> "\n" <>
+  "Valor: " <> Enum.at(lista, 3) <> "\n" <>
+  "Campo Livre (contendo número do convênio, número da conta etc): " <>
+  Enum.at(lista, 4) <> "\n"
+  end
+
+  def decodificar(codigo_de_barras) do
+    # Formata o código de barras
+    codigo_de_barras = codigo_de_barras |> String.replace([".", ",", "-"], "")
+    # Captura os dados da decodifição
+    banco = codigo_de_barras |> decodificar_banco()
+    moeda = codigo_de_barras |> decodificar_moeda()
+    data = codigo_de_barras |> decodificar_data_vencimento()
+    valor = codigo_de_barras |> decodificar_valor()
+    campo_livre = codigo_de_barras |> decodificar_campo_livre()
+    linha_digitavel = codigo_de_barras |> decodificar_linha_digitavel()
+    # Chama a função IO
+    saida_decodificador([banco, moeda, data, valor, campo_livre, linha_digitavel])
   end
 
 

@@ -10,9 +10,9 @@ defmodule Codificador do
     # Calcula o fator de vencimento
     fator_de_validade = Date.diff(data_entrada, data_base)
     if (fator_de_validade > 9999) do
-      1000 + rem(fator_de_validade, 1000) # Reinicia a contagem do fator
+      1000 + rem(fator_de_validade, 1000) |> Integer.to_string # Reinicia a contagem do fator
     else
-      fator_de_validade
+      fator_de_validade |> Integer.to_string
     end
   end
 
@@ -59,10 +59,10 @@ defmodule Codificador do
   end
 
   # === Convênio
-  def codificar_nosso_numero(lista) do
-    (lista |> List.pop_at(0) |> elem(1)) <> (lista |> List.pop_at(1) |> elem(1)) <>
-    (lista |> List.pop_at(2) |> elem(1)) <> (lista |> List.pop_at(3) |> elem(1))
-  end
+  # def codificar_nosso_numero(lista) do
+  #   (lista |> List.pop_at(0) |> elem(1)) <> (lista |> List.pop_at(1) |> elem(1)) <>
+  #   (lista |> List.pop_at(2) |> elem(1)) <> (lista |> List.pop_at(3) |> elem(1))
+  # end
 
     # === Linha Digitável === #
   # Transdorma uma String em uma lista
@@ -90,7 +90,7 @@ defmodule Codificador do
   end
 
   # Critério de parada da função alternar
-  def alternar([], _) do  # devia ser declarado antes das outras eu acho
+  def alternar([], _) do
     []
   end
 
@@ -135,30 +135,26 @@ defmodule Codificador do
   campo1 <> campo2 <> campo3 <> campo4 <> campo5
   end
 
-  @moduledoc """
-  Documentation for `CodificadorDecodificador`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> CodificadorDecodificador.hello()
-      :world
-
-  """
-  def codificar(dados) do
-    # codigo_do_banco = dados |> Enum.at(0)
-    # moeda = dados |> Enum.at(1)
-    # fator_de_validade = dados |> Enum.at(2) |> codificar_data_vencimento
-    # valor = dados |> Enum.at(3) |> codificar_valor
-    # nosso_numero = dados |> Enum.slice(4, 5) |> codificar_nosso_numero
-
-    # codigo_de_barras = StringIO.open("w")
-    # IO.write(codigo_de_barras, Enum.at(dados,0) <> Enum.at(dados,1))
-    # IO.write(codigo_de_barras, codificar_data_vencimento)
-    # IO.write()
-
+  def saida_codificador(lista) do
+    # Abre uma stream que recebera as strings
+    saida = "Código de Barras: " <> Enum.at(lista, 0) <>
+    " e" <> " Linha Digitável: " <> Enum.at(lista, 1)
+    saida # Vamos retornar uam string apenas por enquanto
+  end
+  # Caso a entrada seja dada como vetor de informacoes
+  def codificar(dados) when is_list(dados) do
+    # Não é necessário codificar o codigo da moeda ou do banco
+    codigo_do_banco = dados |> Enum.at(0)
+    moeda = dados |> Enum.at(1)
+    fator_de_validade = dados |> Enum.at(2) |> codificar_data_vencimento
+    valor = dados |> Enum.at(3) |> codificar_valor()
+    nosso_numero = dados |> Enum.slice(4, 8) |> List.to_string()
+    codigo_de_barras = codigo_do_banco <> moeda <> fator_de_validade <> valor <> nosso_numero |>
+    calcular_dv_codigo_de_barras()
+    linha_digitavel = codigo_de_barras |> codificar_linha_digitavel()
+    [codigo_de_barras, linha_digitavel] |> saida_codificador()
+  end
+  def codificar(arquivo) do
+    arquivo |> File.read |> elem(1) |> String.split("\n") |> codificar
   end
 end
