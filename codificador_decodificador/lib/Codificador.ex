@@ -58,12 +58,6 @@ defmodule Codificador do
     (codigo_sem_dv |> String.slice(0, 4)) <> Integer.to_string(fator) <> (codigo_sem_dv |> String.slice(4, 39))
   end
 
-  # === Convênio
-  # def codificar_nosso_numero(lista) do
-  #   (lista |> List.pop_at(0) |> elem(1)) <> (lista |> List.pop_at(1) |> elem(1)) <>
-  #   (lista |> List.pop_at(2) |> elem(1)) <> (lista |> List.pop_at(3) |> elem(1))
-  # end
-
     # === Linha Digitável === #
   # Transdorma uma String em uma lista
   def stringToList(string) do

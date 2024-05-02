@@ -62,19 +62,4 @@ defmodule Decodificador do
     saida_decodificador([banco, moeda, data, valor, campo_livre, linha_digitavel])
   end
 
-
-  @moduledoc """
-  Documentation for `CodificadorDecodificador`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> CodificadorDecodificador.hello()
-      :world
-
-  """
-
 end
