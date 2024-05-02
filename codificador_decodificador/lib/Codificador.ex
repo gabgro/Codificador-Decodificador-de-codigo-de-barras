@@ -10,9 +10,9 @@ defmodule Codificador do
     # Calcula o fator de vencimento
     fator_de_validade = Date.diff(data_entrada, data_base)
     if (fator_de_validade > 9999) do
-      1000 + rem(fator_de_validade, 1000) # Reinicia a contagem do fator
+      1000 + rem(fator_de_validade, 1000) |> Integer.to_string # Reinicia a contagem do fator
     else
-      fator_de_validade
+      fator_de_validade |> Integer.to_string
     end
   end
 
@@ -138,27 +138,20 @@ defmodule Codificador do
   def saida_codificador(lista) do
     # Abre uma stream que recebera as strings
     saida = "Código de Barras: " <> Enum.at(lista, 0) <>
-    "\n" <> "Linha Digitável: " <> Enum.at(lista, 1) <> "\n"
-    IO.puts(saida)
+    " e" <> " Linha Digitável: " <> Enum.at(lista, 1)
+    saida # Vamos retornar uam string apenas por enquanto
   end
   # Caso a entrada seja dada como vetor de informacoes
   def codificar(dados) when is_list(dados) do
     # Não é necessário codificar o codigo da moeda ou do banco
-    IO.puts("Entrou codificar\n")
     codigo_do_banco = dados |> Enum.at(0)
-    IO.puts("Entrou codificar\n")
     moeda = dados |> Enum.at(1)
-    IO.puts("Entrou codificar\n")
     fator_de_validade = dados |> Enum.at(2) |> codificar_data_vencimento
-    IO.puts("Entrou codificar\n")
     valor = dados |> Enum.at(3) |> codificar_valor()
-    IO.puts("Entrou codificar\n")
     nosso_numero = dados |> Enum.slice(4, 8) |> List.to_string()
-    IO.puts("Entrou codificar\n")
-    codigo_de_barras = codigo_do_banco <> moeda <> (fator_de_validade |> Integer.to_string) <> valor <> nosso_numero
-    IO.puts("Entrou codificar\n")
+    codigo_de_barras = codigo_do_banco <> moeda <> fator_de_validade <> valor <> nosso_numero |>
+    calcular_dv_codigo_de_barras()
     linha_digitavel = codigo_de_barras |> codificar_linha_digitavel()
-    IO.puts("Entrou codificar\n")
     [codigo_de_barras, linha_digitavel] |> saida_codificador()
   end
   def codificar(arquivo) do
