@@ -7,6 +7,7 @@ defmodule Decodificador do
     codigo_de_barras |> String.at(3)
   end
 
+  # Função auxiliar para a decodificação da data
   defp converter_data_string(data) do
     data |> Date.to_string |> String.split("-") |>  Enum.reverse |>
     List.insert_at(1, "/") |> List.insert_at(3, "/") |> List.to_string
@@ -31,13 +32,12 @@ defmodule Decodificador do
   end
 
   def decodificar_linha_digitavel(codigo_de_barras) do
-    Codificador.codificar_linha_digitavel(codigo_de_barras)
+    Codificador.codificar_linha_digitavel(codigo_de_barras) # Basta chamar a função do codificador
   end
-
 
   # A lista de saida vai estar organizado de acordo com o enunciado da tarefa 2
   def saida_decodificador(lista) do
-    # Abre uma stream que recebera as strings
+    # A saída será escrita como String
   "Linha Digitável: " <> Enum.at(lista, 5) <> "\n" <>
   "Código do Banco: " <> Enum.at(lista, 0) <> "\n" <>
   "Código da Moeda: " <> Enum.at(lista, 1) <> "\n" <>
@@ -48,7 +48,7 @@ defmodule Decodificador do
   end
 
   def decodificar(codigo_de_barras) do
-    # Formata o código de barras
+    # Remove possíveis caracteres lixo
     codigo_de_barras = codigo_de_barras |> String.replace([".", ",", "-"], "")
     # Captura os dados da decodifição
     banco = codigo_de_barras |> decodificar_banco()

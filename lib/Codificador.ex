@@ -16,7 +16,6 @@ defmodule Codificador do
     end
   end
 
-
   # A entrada deve ser do tipo String
   def codificar_valor(valor_string) do
     # Caso o número fornecido não tenha casas decimais, adicionamos ".00" ao fim da string
@@ -28,8 +27,8 @@ defmodule Codificador do
     String.pad_leading(valor, 10,"0")
   end
 
-  # == Calcula o somatorio dos dígitos do codigo com seus devidos multiplicadores
-
+  # == Calcula o somatorio dos dígitos do codigo com seus devidos multiplicadores para
+  #    obter o DV do código de barras
   # Condição de parada: quando há apenas um digito restante do codigo
   def soma_dv(codigo, peso_atual) when byte_size(codigo) == 1 do
     String.to_integer(codigo) * peso_atual
@@ -38,9 +37,9 @@ defmodule Codificador do
   def soma_dv(codigo, peso_atual) when peso_atual < 9 do
     # Extrai último termo da string do codigo e converte para inteiro
     digito_atual = codigo |> String.last() |> String.to_integer()
-    # Retira ultima letra da string "codigo"
+    # Retira ultima letra da string "codigo" para a chamada recursiva da função
     codigo_sem_ultimo = String.slice(codigo, 0, String.length(codigo) - 1)
-    (digito_atual * peso_atual) + soma_dv(codigo_sem_ultimo,peso_atual + 1)
+    (digito_atual * peso_atual) + soma_dv(codigo_sem_ultimo, peso_atual + 1)
   end
   # Quando o peso está em 9 ,resetamos o valor para 2
   def soma_dv(codigo, peso_atual) do
@@ -48,7 +47,7 @@ defmodule Codificador do
     codigo_sem_ultimo = String.slice(codigo, 0, String.length(codigo) - 1)
     (digito_atual * peso_atual) + soma_dv(codigo_sem_ultimo, 2)
   end
-
+  # Calcula o DV do código, retorna o código de barras com DV incluso
   def calcular_dv_codigo_de_barras(codigo_sem_dv) do
     somatorio_dos_termos = soma_dv(codigo_sem_dv, 2)
     fator = 11 - rem(somatorio_dos_termos, 11)
@@ -59,7 +58,7 @@ defmodule Codificador do
   end
 
     # === Linha Digitável === #
-  # Transdorma uma String em uma lista
+  # Transforma uma String em uma lista
   def stringToList(string) do
     for<<x::binary-1 <- string>>, do: x
   end
@@ -82,7 +81,6 @@ defmodule Codificador do
       [h*2|alternar(l,1)]
     end
   end
-
   # Critério de parada da função alternar
   def alternar([], _) do
     []
@@ -111,6 +109,7 @@ defmodule Codificador do
     10-resultado
   end
 
+  # Constrói a linha digitável
   def codificar_linha_digitavel(codigo_de_barras) do  # será a ultima funcao chamada, pois precisa do codigo inteiro
   # Campo 1
   str1 = (codigo_de_barras |> String.slice(0, 4)) <> (codigo_de_barras |> String.slice(19,5))
@@ -129,15 +128,16 @@ defmodule Codificador do
   campo1 <> campo2 <> campo3 <> campo4 <> campo5
   end
 
-  def saida_codificador(lista) do
-    # Abre uma stream que recebera as strings
+  defp saida_codificador(lista) do
+    # Abre uma stream que receberá as strings
     saida = "Código de Barras: " <> Enum.at(lista, 0) <>
     " e" <> " Linha Digitável: " <> Enum.at(lista, 1)
-    saida # Vamos retornar uam string apenas por enquanto
+    saida # Vamos retornar uma string apenas por enquanto (deve ser IO.puts)
   end
-  # Caso a entrada seja dada como vetor de informacoes
+
+  # Caso a entrada seja dada como vetor de dados
   def codificar(dados) when is_list(dados) do
-    # Não é necessário codificar o codigo da moeda ou do banco
+    # Captura as partes codificadas do código
     codigo_do_banco = dados |> Enum.at(0)
     moeda = dados |> Enum.at(1)
     fator_de_validade = dados |> Enum.at(2) |> codificar_data_vencimento
@@ -146,9 +146,11 @@ defmodule Codificador do
     codigo_de_barras = codigo_do_banco <> moeda <> fator_de_validade <> valor <> nosso_numero |>
     calcular_dv_codigo_de_barras()
     linha_digitavel = codigo_de_barras |> codificar_linha_digitavel()
+    # Chama a função IO
     [codigo_de_barras, linha_digitavel] |> saida_codificador()
   end
-  def codificar(arquivo) do
+  # Caso seja fornecido um arquivo como entrada (test/codificador_test_file.txt é o default)
+  def codificar(arquivo \\ "../codificador_decodificador/test/codificador_file.txt") do
     arquivo |> File.read |> elem(1) |> String.split("\n") |> codificar
   end
 end
