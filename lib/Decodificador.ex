@@ -1,5 +1,4 @@
 defmodule Decodificador do
-  import Codificador
   def decodificar_banco(codigo_de_barras) do
     codigo_de_barras |> String.slice(0,3)
   end
