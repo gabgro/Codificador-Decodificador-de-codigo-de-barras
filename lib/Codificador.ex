@@ -146,11 +146,21 @@ defmodule Codificador do
     codigo_de_barras = codigo_do_banco <> moeda <> fator_de_validade <> valor <> nosso_numero |>
     calcular_dv_codigo_de_barras()
     linha_digitavel = codigo_de_barras |> codificar_linha_digitavel()
+    #Gera um arquivo .PNG do código de barras
+    codigo_de_barras |> gerar_codigo_de_barras()
     # Chama a função IO
     [codigo_de_barras, linha_digitavel] |> saida_codificador() |> IO.puts()
   end
+
   # Caso seja fornecido um arquivo como entrada (test/codificador_test_file.txt é o default)
   def codificar(arquivo \\ "../codificador_decodificador/test/codificador_file.txt") do
     arquivo |> File.read |> elem(1) |> String.split("\n") |> codificar
   end
+
+ #Caso o arquivo barcode.png não exista ele será criado da pasta do projeto
+ #Cso ele já exista ele será substituido pelo novo código de barras
+  def gerar_codigo_de_barras (codigo) do
+    Barlix.ITF.encode!(codigo) |> Barlix.PNG.print(file: "barcode.png")
+  end
+
 end
