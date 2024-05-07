@@ -4,7 +4,7 @@ Esta é a implementação em Elixir da Tarefa 2, feita por Gabriel Rodrigues de 
 
 ## Instalação
 
-[1] Clone este repositório na sua máquina. Pode ser feito com o comando:
+* Clone este repositório na sua máquina. Pode ser feito com o comando:
 ```
 $ git clone https://github.com/gabgro/Codificador-Decodificador-de-codigo-de-barras.git
 ```
@@ -13,7 +13,8 @@ $ git clone https://github.com/gabgro/Codificador-Decodificador-de-codigo-de-bar
 $ mix deps.get
 ```
 Para instalar as dependências necessárias.
-[3] Para compilar o projeto, use o comando 
+
+* Para compilar o projeto, use o comando 
 ``$ mix``
 Caso queira executar os teste íncluidos no diretório ``/test``, use o comando:
 ```
