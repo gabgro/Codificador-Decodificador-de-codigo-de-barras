@@ -130,9 +130,9 @@ defmodule Codificador do
 
   defp saida_codificador(lista) do
     # Abre uma stream que receberá as strings
-    saida = "Código de Barras: " <> Enum.at(lista, 0) <>
-    " e" <> " Linha Digitável: " <> Enum.at(lista, 1)
-    saida # Vamos retornar uma string apenas por enquanto (deve ser IO.puts)
+    saida = "Código de Barras: " <> Enum.at(lista, 0) <> "\n"
+    <> " Linha Digitável: " <> Enum.at(lista, 1)
+    saida
   end
 
   # Caso a entrada seja dada como vetor de dados
@@ -153,8 +153,10 @@ defmodule Codificador do
   end
 
   # Caso seja fornecido um arquivo como entrada (test/codificador_test_file.txt é o default)
-  def codificar(arquivo \\ "../codificador_decodificador/test/codificador_file.txt") do
+  def codificar(arquivo) do
+    IO.puts("entrou no codificar")
     arquivo |> File.read |> elem(1) |> String.split("\n") |> codificar
+    IO.puts("Saiu do codificar")
   end
 
  #Caso o arquivo barcode.png não exista ele será criado da pasta do projeto
