@@ -10,6 +10,7 @@ defmodule Codificador do
     # Calcula o fator de vencimento
     fator_de_validade = Date.diff(data_entrada, data_base)
     if (fator_de_validade > 9999) do
+      # Reinicia a contagem do fator, caso ultrapasse o valor 9999
       1000 + rem(fator_de_validade, 1000) |> Integer.to_string # Reinicia a contagem do fator
     else
       fator_de_validade |> Integer.to_string
@@ -22,15 +23,13 @@ defmodule Codificador do
     if !String.contains?(valor_string, [".", ","]) do
       String.pad_trailing(valor_string, String.length(valor_string) + 3, ".00")
     end
-    # Converte valor em string e remove o "."
+    # Converte valor em string e remove qualquer possível lixo ("R$", "$", ".", "," etc)
     valor =  valor_string |> String.replace(["R$", "$", ".", ",", " "], "")
     String.pad_leading(valor, 10,"0")
   end
 
-  # == Calcula o somatorio dos dígitos do codigo com seus devidos multiplicadores para
-  #    obter o DV do código de barras
-  # Condição de parada: quando há apenas um digito restante do codigo
-  def soma_dv(codigo, peso_atual) when byte_size(codigo) == 1 do
+  # Função auxiliar para o código do DV. Calcula o somatorio dos dígitos do codigo com seus devidos pesos
+  def soma_dv(codigo, peso_atual) when byte_size(codigo) == 1 do # Quando há apenas um digito restante do codigo (parada)
     String.to_integer(codigo) * peso_atual
   end
   # Quando o peso está em [2, 8]
@@ -153,14 +152,12 @@ defmodule Codificador do
   end
 
   # Caso seja fornecido um arquivo como entrada (test/codificador_test_file.txt é o default)
-  def codificar(arquivo) do
-    IO.puts("entrou no codificar")
+  def codificar(arquivo \\ "../Codificador-Decodificador-de-codigo-de-barras/test/codificador_file.txt") do
     arquivo |> File.read |> elem(1) |> String.split("\n") |> codificar
-    IO.puts("Saiu do codificar")
   end
 
  #Caso o arquivo barcode.png não exista ele será criado da pasta do projeto
- #Cso ele já exista ele será substituido pelo novo código de barras
+ #Caso ele já exista ele será substituido pelo novo código de barras
   def gerar_codigo_de_barras (codigo) do
     Barlix.ITF.encode!(codigo) |> Barlix.PNG.print(file: "barcode.png")
   end

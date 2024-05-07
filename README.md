@@ -1,21 +1,25 @@
-# CodificadorDecodificador
+# Codificador/Decodificador de código de barras
 
-**TODO: Add description**
+Esta é a implementação em Elixir da Tarefa 2, feita por Gabriel Rodrigues de Oliveira e Samuel Morais da Rocha e Silva.
 
-## Installation
+## Instalação
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `codificador_decodificador` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:codificador_decodificador, "~> 0.1.0"}
-  ]
-end
+[1] Clone este repositório na sua máquina. Pode ser feito com o comando:
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/codificador_decodificador](https://hexdocs.pm/codificador_decodificador).
-
+$ git clone https://github.com/gabgro/Codificador-Decodificador-de-codigo-de-barras.git
+```
+[2] Dentro do diretório raiz do projeto, aquele com o arquivo `mix.exs`, insira o comando:
+```
+$ mix deps.get
+```
+Para instalar as dependências necessárias.
+[3] Para compilar o projeto, use o comando 
+``$ mix``
+Caso queira executar os teste íncluidos no diretório ``/test``, use o comando:
+```
+$ mix test
+```
+Caso queira abrir o ambiente iEX, pode-se usar o comando:
+```
+$ iex -S mix
+```
