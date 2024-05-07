@@ -112,20 +112,20 @@ defmodule Codificador do
   # Constrói a linha digitável
   def codificar_linha_digitavel(codigo_de_barras) do  # será a ultima funcao chamada, pois precisa do codigo inteiro
   # Campo 1
-  str1 = (codigo_de_barras |> String.slice(0, 4)) <> (codigo_de_barras |> String.slice(19,5))
-  campo1 = str1 <> (str1 |> digitoVerificadorLinha(1) |> Integer.to_string)
+  str1 = (codigo_de_barras |> String.slice(0, 4)) <> (codigo_de_barras |> String.at(19)) <> "." <> (codigo_de_barras |> String.slice(20,4))
+  campo1 = str1 <> (str1 |> String.replace(".","") |> digitoVerificadorLinha(1) |> Integer.to_string)
   # Campo 2
-  str2 = (codigo_de_barras |> String.slice(24, 10))
-  campo2 = str2 <> (str2 |> digitoVerificadorLinha(2) |> Integer.to_string)
+  str2 = (codigo_de_barras |> String.slice(24, 5)) <> "." <> (codigo_de_barras |> String.slice(29, 5))
+  campo2 = str2 <> (str2 |> String.replace(".","") |> digitoVerificadorLinha(2) |> Integer.to_string)
   # Campo 3
-  str3 = codigo_de_barras |> String.slice(34, 10)
-  campo3 = str3  <> (str3 |> digitoVerificadorLinha(3) |> Integer.to_string)
+  str3 = (codigo_de_barras |> String.slice(34, 5)) <> "." <> (codigo_de_barras |> String.slice(39, 5))
+  campo3 = str3  <> (str3 |> String.replace(".","") |> digitoVerificadorLinha(3) |> Integer.to_string)
   # Campo 4
   campo4 = codigo_de_barras |> String.at(4)
   # Campo 5
   campo5 = (codigo_de_barras |> String.slice(5, 4)) <> (codigo_de_barras |> String.slice(9, 10))
   # Montagem da linha
-  campo1 <> campo2 <> campo3 <> campo4 <> campo5
+  campo1 <> " " <> campo2 <> " " <> campo3 <> " " <> campo4 <> " " <> campo5
   end
 
   defp saida_codificador(lista) do
@@ -147,7 +147,7 @@ defmodule Codificador do
     calcular_dv_codigo_de_barras()
     linha_digitavel = codigo_de_barras |> codificar_linha_digitavel()
     # Chama a função IO
-    [codigo_de_barras, linha_digitavel] |> saida_codificador()
+    [codigo_de_barras, linha_digitavel] |> saida_codificador() |> IO.puts()
   end
   # Caso seja fornecido um arquivo como entrada (test/codificador_test_file.txt é o default)
   def codificar(arquivo \\ "../codificador_decodificador/test/codificador_file.txt") do

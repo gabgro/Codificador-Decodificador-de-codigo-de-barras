@@ -28,7 +28,24 @@ defmodule Decodificador do
   # Não parece ser possivel decodificar as informacoes separadamente (conta corrente etc)
   # pois não há como saber o tipo de convenio
   def decodificar_campo_livre(codigo_de_barras) do
-    codigo_de_barras |> String.slice(19, 25)
+    cond do
+      #Convênio de 7 posições
+      codigo_de_barras |> String.slice(19,6) == "000000" ->
+        "Numero do convênio: " <> (codigo_de_barras |> String.slice(25,7)) <> "\n" <>
+        "Complemento: " <> (codigo_de_barras |> String.slice(32,10)) <> "\n" <>
+        "Tipo da carteira/Modalidade da cobrança: " <> (codigo_de_barras |> String.slice(42,2)) <> "\n"
+      #17 posições livres
+      codigo_de_barras |> String.slice(42,2) == "21" ->
+        "Numero do convênio: " <> (codigo_de_barras |> String.slice(19,6)) <> "\n" <>
+        "Número livre: " <> (codigo_de_barras |> String.slice(25,17)) <> "\n"
+      #Convênio de 4 posições
+      true ->
+        "Numero do convênio: " <> (codigo_de_barras |> String.slice(19,4)) <> "\n" <>
+        "Complemento: " <> (codigo_de_barras |> String.slice(23,7)) <> "\n" <>
+        "Número da agência: " <> (codigo_de_barras |> String.slice(30,4)) <> "\n" <>
+        "Conta corrente: " <> (codigo_de_barras |> String.slice(34,8)) <> "\n" <>
+        "Tipo da carteira/Modalidade da cobrança: " <> (codigo_de_barras |> String.slice(42,2)) <> "\n"
+    end
   end
 
   def decodificar_linha_digitavel(codigo_de_barras) do
@@ -43,7 +60,6 @@ defmodule Decodificador do
   "Código da Moeda: " <> Enum.at(lista, 1) <> "\n" <>
   "Data de Vencimento: " <> Enum.at(lista, 2) <> "\n" <>
   "Valor: " <> Enum.at(lista, 3) <> "\n" <>
-  "Campo Livre (contendo número do convênio, número da conta etc): " <>
   Enum.at(lista, 4) <> "\n"
   end
 
@@ -58,7 +74,7 @@ defmodule Decodificador do
     campo_livre = codigo_de_barras |> decodificar_campo_livre()
     linha_digitavel = codigo_de_barras |> decodificar_linha_digitavel()
     # Chama a função IO
-    saida_decodificador([banco, moeda, data, valor, campo_livre, linha_digitavel])
+    saida_decodificador([banco, moeda, data, valor, campo_livre, linha_digitavel]) |> IO.puts()
   end
 
 end
