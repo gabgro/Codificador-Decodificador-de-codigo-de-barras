@@ -25,8 +25,6 @@ defmodule Decodificador do
     str1 <> "." <> str2
   end
 
-  # Não parece ser possivel decodificar as informacoes separadamente (conta corrente etc)
-  # pois não há como saber o tipo de convenio
   def decodificar_campo_livre(codigo_de_barras) do
     cond do
       #Convênio de 7 posições

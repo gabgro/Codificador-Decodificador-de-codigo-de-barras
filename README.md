@@ -8,7 +8,7 @@ Este projeto conta com dois módulos: **Codificador** e **Decodificador**.
  **Codificador:** <br>
  O módulo **Codificador** conta com a função pública `codificar`, que recebe os dados especificados no relatório como entrada e retornará o código de barras gerado, tal como sua respectiva linha digitável.
 
-A entrada para a função `Codificador.codificar` pode ser uma lista contendo os dados de entrada na ordem estabelecida ou um caminho para um arquivo `.txt`,  tal que este contenha todos os dados separados por linha. O arquivo [`./test/codificador_file.txt`](test/codificador_file.txt) está declarado como o parâmetro padrão da função, logo, caso seja chamada sem argumentos, ele será lido como entrada. Portanto, caso queira, é possível mudar a entrada do programa apenas alterando o conteúdo deste arquivo.
+A entrada para a função `Codificador.codificar` pode ser uma lista contendo os dados de entrada na ordem estabelecida ou um caminho para um arquivo `.txt`,  tal que este contenha todos os dados separados por quebra de linhas. O arquivo [`codificador_file.txt`](codificador_file.txt) está declarado como o parâmetro padrão da função, logo, caso seja chamada sem argumentos, ele será lido como entrada. Portanto, caso queira, é possível mudar a entrada do programa apenas alterando o conteúdo deste arquivo.
 Exemplos:
 ```
 iex(1)> Codificador.codificar()  # Chamada tomando o arquivo padrão como entrada
@@ -42,7 +42,8 @@ Caso queira executar os teste íncluidos no diretório ``/test``, use o comando:
   ```
   $ mix test
   ```
-  Caso queira abrir o ambiente iEX, pode-se usar o comando:
+  Caso queira abrir e usar os módulos no ambiente iEX, pode-se usar o comando:
     ```
     $ iex -S mix
     ```
+  Com isso, os módulos Codificador e Decodificador estarão disponíveis.

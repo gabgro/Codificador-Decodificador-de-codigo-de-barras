@@ -152,7 +152,7 @@ defmodule Codificador do
   end
 
   # Caso seja fornecido um arquivo como entrada (test/codificador_test_file.txt é o default)
-  def codificar(arquivo \\ "../Codificador-Decodificador-de-codigo-de-barras/test/codificador_file.txt") do
+  def codificar(arquivo \\ "codificador_file.txt") do
     arquivo |> File.read |> elem(1) |> String.split("\n") |> codificar
   end
 
